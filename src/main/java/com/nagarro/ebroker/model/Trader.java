@@ -17,7 +17,11 @@ public class Trader {
     @Column(name = "availableFunds")
     private double availableFunds;
 
-    @Column(name = "equities")
+    @ElementCollection
+    @CollectionTable(
+            name="Equity",
+            joinColumns=@JoinColumn(name="id")
+    )
     private List<Equity> equities;
 
     public Trader() {

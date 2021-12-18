@@ -19,7 +19,7 @@ public class TraderServiceImpl implements TraderService {
 
     public ResponseEntity<Trader> getTraderById(String id){
 
-        Trader traderData = traderRepository.findOne(id);
+        Trader traderData = traderRepository.findById(id).get();
         if(traderData != null){
             return new ResponseEntity<>(traderData, HttpStatus.OK);
         }else {
@@ -40,7 +40,7 @@ public class TraderServiceImpl implements TraderService {
 
     @Override
     public ResponseEntity<Trader> addFunds(String id, double fund) {
-        Trader traderData = traderRepository.findOne(id);
+        Trader traderData = traderRepository.findById(id).get();
         if (traderData != null) {
             double existingFund = traderData.getAvailableFunds();
             traderData.setAvailableFunds(existingFund + fund);

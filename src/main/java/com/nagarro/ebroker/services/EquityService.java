@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EquityService {
 
-    ResponseEntity<Equity> getEquityById(String id);
+    Equity getEquityById(String id);
 
     ResponseEntity<Equity> addEquity(Equity equity);
 

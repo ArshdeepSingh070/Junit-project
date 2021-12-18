@@ -5,6 +5,7 @@ package com.nagarro.ebroker.model;
 import javax.persistence.*;
 
 @Entity
+@Embeddable
 @Table(name = "equity")
 public class Equity {
 
