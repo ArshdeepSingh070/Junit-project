@@ -17,36 +17,36 @@ public class TraderServiceImpl implements TraderService {
     @Autowired
     TraderRepository traderRepository;
 
-    public ResponseEntity<Trader> getTraderById(String id){
+    public Trader getTraderById(long id){
 
         Trader traderData = traderRepository.findById(id).get();
         if(traderData != null){
-            return new ResponseEntity<>(traderData, HttpStatus.OK);
+            return new ResponseEntity<>(traderData, HttpStatus.OK).getBody();
         }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return (Trader) new ResponseEntity<>(HttpStatus.NOT_FOUND).getBody();
         }
 
     }
 
-    public ResponseEntity<Trader> createTrader(Trader trader){
+    public Trader createTrader(Trader trader){
         try {
             Trader createdTrader = traderRepository
                     .save(new Trader(trader.getId(), trader.getName(), trader.getAvailableFunds(), null));
-            return new ResponseEntity<>(createdTrader, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdTrader, HttpStatus.CREATED).getBody();
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return (Trader) new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR).getBody();
         }
     }
 
     @Override
-    public ResponseEntity<Trader> addFunds(String id, double fund) {
+    public Trader addFunds(long id, double fund) {
         Trader traderData = traderRepository.findById(id).get();
         if (traderData != null) {
             double existingFund = traderData.getAvailableFunds();
             traderData.setAvailableFunds(existingFund + fund);
-            return new ResponseEntity<>(traderRepository.save(traderData), HttpStatus.OK);
+            return new ResponseEntity<>(traderRepository.save(traderData), HttpStatus.OK).getBody();
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return (Trader) new ResponseEntity<>(HttpStatus.NOT_FOUND).getBody();
         }
     }
 

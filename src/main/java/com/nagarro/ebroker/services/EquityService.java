@@ -1,15 +1,14 @@
 package com.nagarro.ebroker.services;
 
 import com.nagarro.ebroker.model.Equity;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface EquityService {
 
-    Equity getEquityById(String id);
+    Equity getEquityById(long id);
 
-    ResponseEntity<Equity> addEquity(Equity equity);
+    Equity addEquity(Equity equity);
 
-    public ResponseEntity<List<Equity>> getAllEquities();
+    List<Equity> getAllEquities();
 }

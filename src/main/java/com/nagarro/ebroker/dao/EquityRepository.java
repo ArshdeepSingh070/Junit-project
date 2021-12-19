@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EquityRepository extends JpaRepository<Equity, String> {
-    //List<Equity> getAllEquities();
+public interface EquityRepository extends JpaRepository<Equity, Long> {
 
     List<Equity> getEquityById(Long id);
 

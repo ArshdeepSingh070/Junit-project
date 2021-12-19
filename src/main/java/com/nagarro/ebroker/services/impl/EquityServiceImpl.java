@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EquityServiceImpl implements EquityService {
@@ -17,42 +19,40 @@ public class EquityServiceImpl implements EquityService {
     private EquityRepository equityRepository;
 
     @Override
-    public Equity getEquityById(String id) {
-        Equity equityData = equityRepository.findById(id).get();
-        /*if(equityData != null){
-            return new ResponseEntity<>(equityData, HttpStatus.OK);
+    public Equity getEquityById(long id) {
+        Optional<Equity> equityData = equityRepository.findById(id);
+        if(equityData != null){
+            return equityData.get();
         }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }*/
-        return equityData;
-    }
-
-    @Override
-    public ResponseEntity<Equity> addEquity(Equity equity) {
-        try {
-            Equity addedEquity = equityRepository
-                    .save(new Equity(equity.getId(), equity.getName(), equity.getDescription(), equity.getPrice()));
-            return new ResponseEntity<>(addedEquity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return null;
         }
     }
 
     @Override
-    public ResponseEntity<List<Equity>> getAllEquities() {
-        /*try {
+    public Equity addEquity(Equity equity) {
+        try {
+            Equity addedEquity = equityRepository
+                    .save(new Equity(equity.getName(), equity.getDescription(), equity.getPrice()));
+            return new ResponseEntity<>(addedEquity, HttpStatus.CREATED).getBody();
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public List<Equity> getAllEquities() {
+        try {
             List<Equity> equities = new ArrayList<Equity>();
 
             equityRepository.findAll().forEach(equities :: add);
 
             if (equities.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return (List<Equity>) new ResponseEntity<>(HttpStatus.NO_CONTENT).getBody();
             }
 
-            return new ResponseEntity<>(equities, HttpStatus.OK);
+            return new ResponseEntity<>(equities, HttpStatus.OK).getBody();
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }*/
-        return null;
+            return (List<Equity>) new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR).getBody();
+        }
     }
 }

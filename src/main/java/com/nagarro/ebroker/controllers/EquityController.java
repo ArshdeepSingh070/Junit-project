@@ -3,7 +3,6 @@ package com.nagarro.ebroker.controllers;
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.services.EquityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public class EquityController {
     EquityService equityService;
 
     @GetMapping("/{id}")
-    public Equity getEquityById(@PathVariable("id") String id){
+    public Equity getEquityById(@PathVariable("id") long id){
         Equity equityData = equityService.getEquityById(id);
         if(equityData != null){
             return equityData;
@@ -26,17 +25,17 @@ public class EquityController {
     }
 
     @PostMapping("/addEquity")
-    public ResponseEntity<Equity> addEquity(@RequestBody Equity equity) {
+    public Equity addEquity(@RequestBody Equity equity) {
 
-        ResponseEntity<Equity> equityData = equityService.addEquity(equity);
+        Equity equityData = equityService.addEquity(equity);
 
         return equityData;
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Equity>> getAllEquities(){
+    public List<Equity> getAllEquities(){
 
-        ResponseEntity<List<Equity>> equities = equityService.getAllEquities();
+       List<Equity> equities = equityService.getAllEquities();
 
         return equities;
     }

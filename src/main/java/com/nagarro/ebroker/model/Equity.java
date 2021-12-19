@@ -11,7 +11,7 @@ public class Equity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -25,19 +25,15 @@ public class Equity {
     public Equity() {
     }
 
-    public Equity(String id, String name, String description, double price) {
-        this.id = id;
+    public Equity(String name, String description, double price) {
         this.name = name;
         this.description = description;
         this.price = price;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
+    public long getId() {
+        return id;
     }
 
     public String getName() {

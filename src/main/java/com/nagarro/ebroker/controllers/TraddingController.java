@@ -6,7 +6,6 @@ import com.nagarro.ebroker.services.EquityService;
 import com.nagarro.ebroker.services.TraddingService;
 import com.nagarro.ebroker.services.TraderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,20 +27,20 @@ public class TraddingController {
     TraddingService traddingService;
 
     @PostMapping("/sell/trader/{traderId}/equity/{equityId}")
-    public String sellEquity(@RequestParam("traderId") String traderId, @RequestParam("equityId") String equityId){
+    public String sellEquity(@RequestParam("traderId") long traderId, @RequestParam("equityId") long equityId){
 
-        ResponseEntity<Trader> trader = traderService.getTraderById(traderId);
+        Trader trader = traderService.getTraderById(traderId);
         Equity equity = equityService.getEquityById(equityId);
 
         /*if(trader.getStatusCode().toString().equals(HttpStatus.NOT_FOUND) || equity.getStatusCode().toString().equals(HttpStatus.NOT_FOUND)){
             return "this trader/equity is not present";
         }*/
 
-        List<Equity> traderEquities = getTraderOnHoldEquities(trader.getBody());
+        List<Equity> traderEquities = getTraderOnHoldEquities(trader);
 
         for(Equity traderEquity : traderEquities){
-            if(traderEquity.getId().equals(equity.getId())){
-                traddingService.sellTraderEquity(trader.getBody(),equity);
+            if(traderEquity.getId() == equity.getId()){
+                traddingService.sellTraderEquity(trader,equity);
                 return "Equity is sold successfully";
             }
         }
@@ -51,14 +50,14 @@ public class TraddingController {
     }
 
     @PostMapping("/buy/trader/{traderId}/equity/{equityId}")
-    public String buyEquity(@RequestParam("traderId") String traderId, @RequestParam("equityId") String equityId){
-        ResponseEntity<Trader> trader = traderService.getTraderById(traderId);
+    public String buyEquity(@RequestParam("traderId") long traderId, @RequestParam("equityId") long equityId){
+        Trader trader = traderService.getTraderById(traderId);
         Equity equity = equityService.getEquityById(equityId);
 
         /*if(trader.getStatusCode().toString().equals(HttpStatus.NOT_FOUND) || equity.getStatusCode().toString().equals(HttpStatus.NOT_FOUND)){
             return "this trader/equity is not present";
         }*/
-        String response = traddingService.buyEquity(trader.getBody(), equity);
+        String response = traddingService.buyEquity(trader, equity);
 
         return response;
     }

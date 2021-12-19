@@ -9,7 +9,7 @@ public class Trader {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -24,21 +24,26 @@ public class Trader {
     )
     private List<Equity> equities;
 
-    public Trader() {
+    /*@OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "equity")
+    private Set<Equity> equities = new HashSet<>();*/
+
+    public Trader(String arsh, double v, List<Equity> equityList) {
     }
 
-    public Trader(String id, String name, double availableFunds, List<Equity> equities) {
+    public Trader(long id, String name, double availableFunds, List<Equity> equities) {
         this.id = id;
         this.name = name;
         this.availableFunds = availableFunds;
         this.equities = equities;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
