@@ -11,7 +11,7 @@ public interface TraderService {
 
     Trader addFunds(long id, double fund);
 
-    void sellEquity(Trader trader, Equity equityId);
+    String sellEquity(Trader trader, Equity equityId);
 
     String buyEquity(Trader trader, Equity equity);
 }

@@ -78,6 +78,10 @@ public class EquityServiceImplTest {
         when(equityRepository.findAll()).thenReturn(equityList);
         assertNotNull(equityService.getAllEquities());
         assertEquals(2,equityService.getAllEquities().size());
-
+    }
+    @Test
+    public void shouldReturnNullIfNoEquities(){
+        when(equityRepository.findAll()).thenReturn(null);
+        assertNull(equityService.getAllEquities());
     }
 }

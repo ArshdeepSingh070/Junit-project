@@ -3,6 +3,7 @@ package com.nagarro.ebroker.controllers;
 import com.nagarro.ebroker.model.Trader;
 import com.nagarro.ebroker.services.TraderService;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -53,6 +54,12 @@ public class TraderControllerTest {
     public void shouldCreateTrader(){
         when(traderService.createTrader(trader)).thenReturn(trader);
         assertNotNull(traderController.createTrader(trader));
+    }
+
+    @Test
+    public void shouldNotCreateTrader(){
+        when(traderService.createTrader(null)).thenReturn(trader);
+        Assertions.assertThrows(RuntimeException.class, ()-> traderController.createTrader(null));
     }
 
     @Test

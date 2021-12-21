@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,18 +40,10 @@ public class EquityServiceImpl implements EquityService {
 
     @Override
     public List<Equity> getAllEquities() {
-        try {
-            List<Equity> equities = new ArrayList<Equity>();
-
-            equityRepository.findAll().forEach(equities :: add);
-
-            if (equities.isEmpty()) {
-                return (List<Equity>) new ResponseEntity<>(HttpStatus.NO_CONTENT).getBody();
+            List<Equity> equities = equityRepository.findAll();
+            if (equities == null) {
+                return null;
             }
-
             return new ResponseEntity<>(equities, HttpStatus.OK).getBody();
-        } catch (Exception e) {
-            return (List<Equity>) new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR).getBody();
-        }
     }
 }

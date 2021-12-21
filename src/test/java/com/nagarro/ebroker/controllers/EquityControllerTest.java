@@ -3,6 +3,7 @@ package com.nagarro.ebroker.controllers;
 
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.services.EquityService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,6 +46,7 @@ class EquityControllerTest {
     public void shouldGetEquityById(){
         when(equityService.getEquityById(001)).thenReturn(equity);
         assertEquals(equity, equityController.getEquityById(001));
+        assertNotNull(equityController.getEquityById(001));
     }
 
     @Test
@@ -60,10 +63,9 @@ class EquityControllerTest {
     }
 
     @Test
-    public void shouldNotAddEquity() throws Exception{
-        Equity equitydata = new Equity("abc","this is abc stock",10.0);
-        when(equityService.addEquity(null)).thenReturn(equitydata);
-        assertEquals(null,equityController.addEquity(equity));
+    public void shouldNotAddEquity(){
+        when(equityService.addEquity(null)).thenReturn(equity);
+        Assertions.assertThrows(RuntimeException.class, ()-> equityController.addEquity(null));
     }
 
     @Test

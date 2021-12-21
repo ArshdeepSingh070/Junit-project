@@ -5,6 +5,7 @@ import com.nagarro.ebroker.model.Trader;
 import com.nagarro.ebroker.services.EquityService;
 import com.nagarro.ebroker.services.TraddingService;
 import com.nagarro.ebroker.services.TraderService;
+import com.nagarro.ebroker.utils.EbrokerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,20 +33,16 @@ public class TraddingController {
         Trader trader = traderService.getTraderById(traderId);
         Equity equity = equityService.getEquityById(equityId);
 
-        /*if(trader.getStatusCode().toString().equals(HttpStatus.NOT_FOUND) || equity.getStatusCode().toString().equals(HttpStatus.NOT_FOUND)){
-            return "this trader/equity is not present";
-        }*/
-
         List<Equity> traderEquities = getTraderOnHoldEquities(trader);
 
         for(Equity traderEquity : traderEquities){
-            if(traderEquity.getId() == equity.getId()){
-                traddingService.sellTraderEquity(trader,equity);
-                return "Equity is sold successfully";
+            if(traderEquity.getName().equals(equity.getName())){
+                String response = traddingService.sellTraderEquity(trader,equity);
+                return response;
             }
         }
 
-        return "No Equity to sell";
+        return EbrokerUtils.getNoEquityHoldingResponse();
 
     }
 
@@ -54,12 +51,12 @@ public class TraddingController {
         Trader trader = traderService.getTraderById(traderId);
         Equity equity = equityService.getEquityById(equityId);
 
-        /*if(trader.getStatusCode().toString().equals(HttpStatus.NOT_FOUND) || equity.getStatusCode().toString().equals(HttpStatus.NOT_FOUND)){
-            return "this trader/equity is not present";
-        }*/
-        String response = traddingService.buyEquity(trader, equity);
-
-        return response;
+        if(trader != null && trader.getAvailableFunds() > 20) {
+            String response = traddingService.buyEquity(trader, equity);
+            return response;
+        }else{
+            return EbrokerUtils.getInsufficientFundResponse();
+        }
     }
 
     private List<Equity> getTraderOnHoldEquities(Trader trader){

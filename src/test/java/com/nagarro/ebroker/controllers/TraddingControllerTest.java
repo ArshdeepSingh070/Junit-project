@@ -6,6 +6,7 @@ import com.nagarro.ebroker.services.EquityService;
 import com.nagarro.ebroker.services.TraddingService;
 import com.nagarro.ebroker.services.TraderService;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,12 +36,6 @@ public class TraddingControllerTest {
     @Mock
     private TraddingService traddingService;
 
-    /*@Mock
-    private Equity equity;
-
-    @Mock
-    private Trader trader;*/
-
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -58,13 +52,27 @@ public class TraddingControllerTest {
         List<Equity> equityList = new ArrayList<>();
         Equity equity = new Equity("abc","abc stock",100);
         equityList.add(equity);
-        Trader trader = new Trader(1,"arsh",1000.0,equityList);
+        Trader trader = new Trader("arsh",1000.0,equityList);
         when(traderService.getTraderById(1)).thenReturn(trader);
         when(equityService.getEquityById(1)).thenReturn(equity);
 
-        doNothing().when(traddingService).sellTraderEquity(trader,equity);
+        when(traddingService.sellTraderEquity(trader,equity)).thenReturn("sold succesfully");
 
         assertNotNull(traddingController.sellEquity(1,1));
+    }
+
+    @Test
+    public void shouldNotAbleToSellEquityIfNotInHolding(){
+        List<Equity> equityList = new ArrayList<>();
+        Equity equityOnHolding = new Equity("abc","abc stock",100);
+        Equity equityToSell = new Equity("xyz", "xyz stock", 100);
+        equityList.add(equityOnHolding);
+        Trader trader = new Trader("arsh",1000.0,equityList);
+        when(traderService.getTraderById(1)).thenReturn(trader);
+        when(equityService.getEquityById(1)).thenReturn(equityToSell);
+
+        assertNotNull(traddingController.sellEquity(1,1));
+        assertEquals("Equity to be sold is not in trader's holding", traddingController.sellEquity(1,1));
     }
 
     @Test
@@ -72,7 +80,7 @@ public class TraddingControllerTest {
         List<Equity> equityList = new ArrayList<>();
         Equity equity = new Equity("abc","abc stock",100);
         equityList.add(equity);
-        Trader trader = new Trader(1,"arsh",1000.0,equityList);
+        Trader trader = new Trader("arsh",1000.0,equityList);
         when(traderService.getTraderById(1)).thenReturn(trader);
         when(equityService.getEquityById(1)).thenReturn(equity);
 
@@ -80,5 +88,14 @@ public class TraddingControllerTest {
 
         assertNotNull(traddingController.buyEquity(1,1));
         assertEquals("successfully bought", traddingController.buyEquity(1,1));
+    }
+
+    @Test
+    public void shouldNotBuyEquityIfLowFunds(){
+        Trader trader = new Trader("arsh",15,null);
+        Equity equity = new Equity("abc", "abc stocks", 50);
+        when(traderService.getTraderById(1)).thenReturn(trader);
+        when(equityService.getEquityById(1)).thenReturn(equity);
+        Assertions.assertEquals("Insufficient Funds",traddingController.buyEquity(1,1));
     }
 }

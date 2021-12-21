@@ -2,6 +2,7 @@ package com.nagarro.ebroker.controllers;
 
 import com.nagarro.ebroker.model.Trader;
 import com.nagarro.ebroker.services.TraderService;
+import com.nagarro.ebroker.utils.EbrokerValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,13 @@ public class TraderController {
 
     @PostMapping("/createTrader")
     public Trader createTrader(@RequestBody Trader trader) {
-      Trader createdTrader = traderService.createTrader(trader);
-      return createdTrader;
+
+      if(EbrokerValidationUtils.checkTraderData(trader)) {
+          Trader createdTrader = traderService.createTrader(trader);
+          return createdTrader;
+      }else{
+          return null;
+      }
     }
 
     @PutMapping("/addFund/{id}")

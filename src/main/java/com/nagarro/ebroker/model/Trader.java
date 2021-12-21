@@ -29,11 +29,10 @@ public class Trader {
             mappedBy = "equity")
     private Set<Equity> equities = new HashSet<>();*/
 
-    public Trader(String arsh, double v, List<Equity> equityList) {
+    public Trader() {
     }
 
-    public Trader(long id, String name, double availableFunds, List<Equity> equities) {
-        this.id = id;
+    public Trader(String name, double availableFunds, List<Equity> equities) {
         this.name = name;
         this.availableFunds = availableFunds;
         this.equities = equities;

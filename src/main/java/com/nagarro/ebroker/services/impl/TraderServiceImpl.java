@@ -4,12 +4,15 @@ import com.nagarro.ebroker.dao.TraderRepository;
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.model.Trader;
 import com.nagarro.ebroker.services.TraderService;
+import com.nagarro.ebroker.utils.EbrokerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TraderServiceImpl implements TraderService {
@@ -19,22 +22,26 @@ public class TraderServiceImpl implements TraderService {
 
     public Trader getTraderById(long id){
 
-        Trader traderData = traderRepository.findById(id).get();
+        Optional<Trader> traderData = traderRepository.findById(id);
         if(traderData != null){
-            return new ResponseEntity<>(traderData, HttpStatus.OK).getBody();
+            return new ResponseEntity<>(traderData, HttpStatus.OK).getBody().get();
         }else {
-            return (Trader) new ResponseEntity<>(HttpStatus.NOT_FOUND).getBody();
+            return null;
         }
 
     }
 
     public Trader createTrader(Trader trader){
         try {
-            Trader createdTrader = traderRepository
-                    .save(new Trader(trader.getId(), trader.getName(), trader.getAvailableFunds(), null));
-            return new ResponseEntity<>(createdTrader, HttpStatus.CREATED).getBody();
+            if(trader != null){
+                Trader createdTrader = traderRepository
+                        .save(trader);
+                return new ResponseEntity<>(createdTrader, HttpStatus.CREATED).getBody();
+            }else{
+                throw new RuntimeException();
+            }
         } catch (Exception e) {
-            return (Trader) new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR).getBody();
+            throw new RuntimeException();
         }
     }
 
@@ -50,20 +57,25 @@ public class TraderServiceImpl implements TraderService {
         }
     }
 
-    public void sellEquity(Trader trader, Equity equity){
+    public String sellEquity(Trader trader, Equity equity){
         List<Equity> holdingEquities = trader.getEquities();
         double existingFunds = trader.getAvailableFunds();
         holdingEquities.remove(equity);
         trader.setEquities(holdingEquities);
         trader.setAvailableFunds(existingFunds + equity.getPrice());
         new ResponseEntity<>(traderRepository.save(trader), HttpStatus.OK);
+        return EbrokerUtils.getSoldResponse();
     }
 
     @Override
     public String buyEquity(Trader trader, Equity equity) {
         double availableFunds = trader.getAvailableFunds();
-        List<Equity> existingEquities = trader.getEquities();
-
+        List<Equity> existingEquities;
+        if(trader.getEquities() == null){
+            existingEquities = new ArrayList<>();
+        }else{
+            existingEquities = trader.getEquities();
+        }
         existingEquities.add(equity);
         availableFunds = availableFunds - equity.getPrice();
 
@@ -72,7 +84,7 @@ public class TraderServiceImpl implements TraderService {
 
         new ResponseEntity<>(traderRepository.save(trader), HttpStatus.OK);
 
-        return "Equity bought succesfully";
+        return EbrokerUtils.getEquityBoughhtResponse();
     }
 
 

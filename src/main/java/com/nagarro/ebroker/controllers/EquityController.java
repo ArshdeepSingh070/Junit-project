@@ -2,6 +2,7 @@ package com.nagarro.ebroker.controllers;
 
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.services.EquityService;
+import com.nagarro.ebroker.utils.EbrokerValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,12 @@ public class EquityController {
     @PostMapping("/addEquity")
     public Equity addEquity(@RequestBody Equity equity) {
 
-        Equity equityData = equityService.addEquity(equity);
-
-        return equityData;
+        if(EbrokerValidationUtils.checlEquityData(equity)) {
+            Equity equityData = equityService.addEquity(equity);
+            return equityData;
+        }else {
+            return null;
+        }
     }
 
     @GetMapping("/getAll")
