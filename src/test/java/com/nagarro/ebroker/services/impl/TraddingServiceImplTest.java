@@ -39,11 +39,6 @@ public class TraddingServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void test(){
-        int i = 10;
-        Assertions.assertNotNull(i);
-    }
 
     @Test
     public void shouldSellTraderEquity(){

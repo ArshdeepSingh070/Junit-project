@@ -2,7 +2,6 @@ package com.nagarro.ebroker.dao;
 
 import com.nagarro.ebroker.model.Equity;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,12 +19,6 @@ public class EquityRepositoryTest {
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void test(){
-        int i = 10;
-        Assertions.assertNotNull(i);
     }
 
     @Test

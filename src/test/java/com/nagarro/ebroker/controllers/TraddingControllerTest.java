@@ -8,6 +8,7 @@ import com.nagarro.ebroker.services.TraderService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -41,12 +42,7 @@ public class TraddingControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void test(){
-        int i = 10;
-        assertEquals(10,i);
-    }
-
+    @DisplayName("Should sell Equity")
     @Test
     public void shouldSellEquity(){
         List<Equity> equityList = new ArrayList<>();
@@ -61,6 +57,7 @@ public class TraddingControllerTest {
         assertNotNull(traddingController.sellEquity(1,1));
     }
 
+    @DisplayName("Should not be able to sell equity if not present in trader's holding")
     @Test
     public void shouldNotAbleToSellEquityIfNotInHolding(){
         List<Equity> equityList = new ArrayList<>();
@@ -75,6 +72,7 @@ public class TraddingControllerTest {
         assertEquals("Equity to be sold is not in trader's holding", traddingController.sellEquity(1,1));
     }
 
+    @DisplayName("Should buy equity is available funds are there")
     @Test
     public void shouldBuyEquity(){
         List<Equity> equityList = new ArrayList<>();
@@ -90,6 +88,7 @@ public class TraddingControllerTest {
         assertEquals("successfully bought", traddingController.buyEquity(1,1));
     }
 
+    @DisplayName("Should not be able to buy equity if available funds are not sufficient")
     @Test
     public void shouldNotBuyEquityIfLowFunds(){
         Trader trader = new Trader("arsh",15,null);

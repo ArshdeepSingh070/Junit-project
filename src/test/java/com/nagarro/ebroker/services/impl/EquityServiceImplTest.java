@@ -5,6 +5,7 @@ import com.nagarro.ebroker.model.Equity;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -37,24 +38,21 @@ public class EquityServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void test(){
-        int i = 10;
-        assertEquals(10,i);
-    }
-
+    @DisplayName("Should get equity for given id")
     @Test
     public void shouldGetEquityById(){
         when(equityRepository.findById((long) 1)).thenReturn(Optional.of(new Equity("abc", "abc stock", 100)));
         assertNotNull(equityService.getEquityById(1));
     }
 
+    @DisplayName("Should not get equity if there is not equity against given id")
     @Test
     public void shouldNotGetEquityById(){
         when(equityRepository.findById((long) 1)).thenReturn(null);
         assertNull(equityService.getEquityById(1));
     }
 
+    @DisplayName("Add equity")
     @Test
     public void shouldAddEquity(){
         Equity equity = new Equity("abc","abc stock",100);
@@ -63,11 +61,13 @@ public class EquityServiceImplTest {
         assertNotNull(equity.getId());
     }
 
+    @DisplayName("Should add equity and should throw exception if data is null")
     @Test
     public void shouldNotAddEquity(){
         Assertions.assertThrows(RuntimeException.class, ()-> equityService.addEquity(null));
     }
 
+    @DisplayName("Should return all the equities present")
     @Test
     public void shouldGetAllEquities(){
         List<Equity> equityList = new ArrayList<>();
@@ -79,6 +79,8 @@ public class EquityServiceImplTest {
         assertNotNull(equityService.getAllEquities());
         assertEquals(2,equityService.getAllEquities().size());
     }
+
+    @DisplayName("Should return null if no equity is there")
     @Test
     public void shouldReturnNullIfNoEquities(){
         when(equityRepository.findAll()).thenReturn(null);

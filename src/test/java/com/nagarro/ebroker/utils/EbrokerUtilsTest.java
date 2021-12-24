@@ -3,6 +3,7 @@ package com.nagarro.ebroker.utils;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -16,12 +17,8 @@ public class EbrokerUtilsTest {
     public void setUp(){
         MockitoAnnotations.initMocks(this);
     }
-    @Test
-    public void test(){
-        int i = 10;
-        Assertions.assertNotNull(i);
-    }
 
+    @DisplayName("Static method test case 1")
     @Test
     public void shouldGetNoSellingTimeResponse(){
         try(MockedStatic<EbrokerUtils> ebrokerUtils = Mockito.mockStatic(EbrokerUtils.class)){
@@ -30,6 +27,7 @@ public class EbrokerUtilsTest {
         }
     }
 
+    @DisplayName("Static method test case 2")
     @Test
     public void shouldGetNoBuyingTimeResponse(){
         try(MockedStatic<EbrokerUtils> ebrokerUtils = Mockito.mockStatic(EbrokerUtils.class)){
@@ -38,6 +36,7 @@ public class EbrokerUtilsTest {
         }
     }
 
+    @DisplayName("Static method test case 3")
     @Test
     public void shouldCheckForWeekDay(){
         try(MockedStatic<EbrokerUtils> ebrokerUtils = Mockito.mockStatic(EbrokerUtils.class)){
@@ -46,6 +45,7 @@ public class EbrokerUtilsTest {
         }
     }
 
+    @DisplayName("Static method test case 4")
     @Test
     public void shouldCheckForTime(){
         try(MockedStatic<EbrokerUtils> ebrokerUtils = Mockito.mockStatic(EbrokerUtils.class)){

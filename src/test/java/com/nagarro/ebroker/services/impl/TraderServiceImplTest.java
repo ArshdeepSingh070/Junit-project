@@ -6,6 +6,7 @@ import com.nagarro.ebroker.model.Trader;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,12 +34,7 @@ public class TraderServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void test(){
-        int i = 10;
-        Assertions.assertNotNull(i);
-    }
-
+    @DisplayName("Get trader by id from repository")
     @Test
     public void shouldGetTraderById(){
         Trader trader = new Trader("arsh",100, null);
@@ -46,12 +42,14 @@ public class TraderServiceImplTest {
         assertEquals(trader, traderService.getTraderById(1L));
     }
 
+    @DisplayName("Should not return any trader")
     @Test
     public void shouldNotGetTraderById(){
         when(traderRepository.findById(1L)).thenReturn(null);
         assertNull(traderService.getTraderById(1L));
     }
 
+    @DisplayName("Should add new trader")
     @Test
     public void shouldCreateTrader(){
         Trader trader = new Trader("arsh",100, null);
@@ -60,11 +58,13 @@ public class TraderServiceImplTest {
         verify(traderRepository,times(1)).save(trader);
     }
 
+    @DisplayName("Should not add trdaer in repo")
     @Test
     public void shouldNotCreateTrader(){
         Assertions.assertThrows(RuntimeException.class, ()-> traderService.createTrader(null));
     }
 
+    @DisplayName("Should add funds in trader's account")
     @Test
     public void shouldAddFunds(){
         Trader trader = new Trader("arsh",100, null);
@@ -74,6 +74,7 @@ public class TraderServiceImplTest {
         assertEquals(200,trader.getAvailableFunds());
     }
 
+    @DisplayName("Should sell equity if in holding")
     @Test
     public void shouldSellEquity(){
         List<Equity> equityList = new ArrayList<>();
@@ -85,6 +86,7 @@ public class TraderServiceImplTest {
         verify(traderRepository, times(1)).save(trader);
     }
 
+    @DisplayName("Should buy equity if funds present")
     @Test
     public void shouldBuyEquity(){
         Equity equity = new Equity("abc","abc stock",100);
