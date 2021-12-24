@@ -23,7 +23,7 @@ public class EquityRepositoryTest {
 
     @Test
     @Rollback(false)
-    public void shouldTestSaveByRepository()
+    public void shouldSaveEquityByRepositoryTest()
     {
         EquityRepository equityRepository = Mockito.mock(EquityRepository.class);
         Equity equity = new Equity();

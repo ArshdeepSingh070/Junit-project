@@ -2,7 +2,6 @@ package com.nagarro.ebroker.services.impl;
 
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.model.Trader;
-import com.nagarro.ebroker.services.EquityService;
 import com.nagarro.ebroker.services.TraddingService;
 import com.nagarro.ebroker.services.TraderService;
 import com.nagarro.ebroker.utils.EbrokerUtils;
@@ -14,9 +13,6 @@ public class TraddingServiceImpl implements TraddingService {
 
     @Autowired
     TraderService traderService;
-
-    @Autowired
-    EquityService equityService;
 
     @Override
     public String sellTraderEquity(Trader trader, Equity equity) {
@@ -38,28 +34,4 @@ public class TraddingServiceImpl implements TraddingService {
                return EbrokerUtils.getNoBuyingTimeResponse();
         }
     }
-
-    /*private boolean checkForWeekDay(){
-        Calendar currentDate = Calendar.getInstance();
-        int dayOfWeek = currentDate.get (Calendar.DAY_OF_WEEK);
-        boolean isWeekday = ((dayOfWeek >= Calendar.MONDAY) && (dayOfWeek <= Calendar.FRIDAY));
-        if(!isWeekday){
-            return false;
-        }
-        return true;
-    }
-*/
-    /*private boolean checkForTime() {
-
-        LocalTime morning = LocalTime.of(0, 0, 0);
-        LocalTime evening = LocalTime.of(23, 0, 0);
-
-        LocalTime nowTime = LocalTime.now();
-
-        if (nowTime.isAfter(morning) && nowTime.isBefore(evening)) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 }

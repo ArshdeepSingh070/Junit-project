@@ -3,7 +3,11 @@ package com.nagarro.ebroker.services;
 import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.model.Trader;
 
+import java.util.List;
+
 public interface TraderService {
+
+    List<Trader> getAllTraders();
 
     Trader getTraderById(long id);
 

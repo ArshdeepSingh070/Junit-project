@@ -81,4 +81,5 @@ class EquityControllerTest {
        when(equityService.getAllEquities()).thenReturn(equityList);
        assertEquals(3, equityController.getAllEquities().size());
     }
+
 }

@@ -46,6 +46,15 @@ public class TraderServiceImpl implements TraderService {
     }
 
     @Override
+    public List<Trader> getAllTraders() {
+        List<Trader> traders = traderRepository.findAll();
+        if (traders == null) {
+            return null;
+        }
+        return new ResponseEntity<>(traders, HttpStatus.OK).getBody();
+    }
+
+    @Override
     public Trader addFunds(long id, double fund) {
         Trader traderData = traderRepository.findById(id).get();
         if (traderData != null) {

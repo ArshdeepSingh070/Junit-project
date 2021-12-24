@@ -4,8 +4,10 @@ import com.nagarro.ebroker.model.Equity;
 import com.nagarro.ebroker.services.EquityService;
 import com.nagarro.ebroker.utils.EbrokerValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @RestController
@@ -44,4 +46,9 @@ public class EquityController {
         return equities;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    String exceptionHandler(ValidationException e){
+        return e.getMessage();
+    }
 }

@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/trade")
 public class TraddingController {
 
+    public static double MINIMUM_FUNDS_TO_BUY = 20;
+
     @Autowired
     TraderService traderService;
 
@@ -51,7 +53,7 @@ public class TraddingController {
         Trader trader = traderService.getTraderById(traderId);
         Equity equity = equityService.getEquityById(equityId);
 
-        if(trader != null && trader.getAvailableFunds() > 20) {
+        if(trader != null && trader.getAvailableFunds() > MINIMUM_FUNDS_TO_BUY) {
             String response = traddingService.buyEquity(trader, equity);
             return response;
         }else{

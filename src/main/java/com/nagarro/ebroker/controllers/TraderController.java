@@ -6,6 +6,8 @@ import com.nagarro.ebroker.utils.EbrokerValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/trader")
 public class TraderController {
@@ -38,5 +40,13 @@ public class TraderController {
     public Trader addFund(@PathVariable("id") long id, @RequestBody double fund) {
         Trader traderData = traderService.addFunds(id, fund);
         return traderData;
+    }
+
+    @GetMapping("/getAll")
+    public List<Trader> getAllEquities(){
+
+        List<Trader> traders = traderService.getAllTraders();
+
+        return traders;
     }
 }

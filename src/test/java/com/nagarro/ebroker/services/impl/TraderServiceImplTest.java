@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -94,5 +95,25 @@ public class TraderServiceImplTest {
         when(traderRepository.save(trader)).thenReturn(trader);
         traderService.buyEquity(trader,equity);
         verify(traderRepository, times(1)).save(trader);
+    }
+
+    @DisplayName("Should return all the traders present")
+    @Test
+    public void shouldGetAllEquities(){
+        Trader trader1 =  new Trader("arsh",20.0,null);
+        Trader trader2 =  new Trader("other",20.0,null);
+        List<Trader> traderList = new ArrayList<>();
+        traderList.add(trader1);
+        traderList.add(trader2);
+        when(traderRepository.findAll()).thenReturn(traderList);
+        assertNotNull(traderService.getAllTraders());
+        assertEquals(2,traderService.getAllTraders().size());
+    }
+
+    @DisplayName("Should return null if no traders is there")
+    @Test
+    public void shouldReturnNullIfNoEquities(){
+        when(traderRepository.findAll()).thenReturn(null);
+        assertNull(traderService.getAllTraders());
     }
 }

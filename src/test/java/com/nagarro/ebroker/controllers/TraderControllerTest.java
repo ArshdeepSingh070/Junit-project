@@ -12,6 +12,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -66,5 +70,18 @@ public class TraderControllerTest {
     public void shouldAddFund(){
         when(traderService.addFunds(1,100)).thenReturn(trader);
         assertNotNull(traderController.addFund(1,100));
+    }
+
+    @DisplayName("Get all present equities")
+    @Test
+    public void shouldGetAllEquities(){
+        Trader trader1 =  new Trader("arsh",20.0,null);
+        Trader trader2 =  new Trader("other",20.0,null);
+        List<Trader> traderList = new ArrayList<>();
+        traderList.add(trader1);
+        traderList.add(trader2);
+
+        when(traderService.getAllTraders()).thenReturn(traderList);
+        assertEquals(2, traderController.getAllEquities().size());
     }
 }

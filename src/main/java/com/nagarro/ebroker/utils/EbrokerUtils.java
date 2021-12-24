@@ -41,8 +41,8 @@ public class EbrokerUtils {
 
     public static boolean checkForTime() {
 
-        LocalTime morning = LocalTime.of(0, 0, 0);
-        LocalTime evening = LocalTime.of(23, 0, 0);
+        LocalTime morning = LocalTime.of(9, 0, 0);
+        LocalTime evening = LocalTime.of(18, 0, 0);
 
         LocalTime nowTime = LocalTime.now();
 
